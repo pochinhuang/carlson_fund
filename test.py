@@ -38,6 +38,7 @@ lookup = (
         [
             pd.json_normalize([x for x in dfsi[m] if isinstance(x, dict)])
             for m in modules
+            if m in dfsi.columns
         ],
         axis=1,
     )
@@ -452,3 +453,4 @@ heatmap.update_traces(
 
 # --- show on Streamlit ---
 st.plotly_chart(heatmap, use_container_width=True)
+
