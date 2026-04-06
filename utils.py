@@ -8,17 +8,17 @@ from pathlib import Path
 
 def fetch_close_prices(tickers, start, end, interval="1d"):
     """Download adjusted close prices and always return a DataFrame."""
-    data = yf.download(
-        tickers,
-        start=start,
-        end=end,
-        interval=interval,
-        auto_adjust=True,
-        threads=True,
-        progress=False,
-    )
+    # data = yf.download(
+    #     tickers,
+    #     start=start,
+    #     end=end,
+    #     interval=interval,
+    #     auto_adjust=True,
+    #     threads=True,
+    #     progress=False,
+    # )
 
-    close = data["Close"]
+    close = pd.read_csv('data/portfolio.csv')
     if isinstance(close, pd.Series):
         name = tickers if isinstance(tickers, str) else tickers[0]
         close = close.to_frame(name=name)

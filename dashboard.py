@@ -1,10 +1,8 @@
 import numpy as np
 import pandas as pd
-import yfinance as yf
 import streamlit as st
 import plotly.express as px
 
-# from yahooquery import Ticker
 from sklearn.linear_model import LinearRegression
 
 
@@ -17,18 +15,12 @@ st.set_page_config(
 
 # read + organize Ticker
 df = pd.read_csv("data/19_CG001_Holdings_clean.csv")
-
 tickers = df["Ticker"].tolist()
 
-return_history = "1y"
-return_interval = "1d"
 
-data = yf.download(tickers, period=return_history,
-                              interval=return_interval,
-                              progress=True, auto_adjust=True)
+# data = pd.read_csv("data/data.csv")
 
-
-portfolio = data['Close'].copy()
+portfolio = pd.read_csv("data/portfolio.csv")
 
 ret = np.round(((portfolio.iloc[-1] / portfolio.iloc[-3]) - 1)*100, 2)
 df['Return (%)'] = df['Ticker'].map(ret).fillna(0)
@@ -65,43 +57,26 @@ pct_contrib = (cov_with_pf / var_p).sort_values(ascending = False)  # sum = 1
 # =========================
 factor_tickers = ["SIZE", "VLUE", "MTUM", "QUAL"]
 market_ticker = "CSUS.L"
-return_history = "1y"
-return_interval = "1d"
-portfolio_data_loc = "data/19_CG001_Holdings_clean.csv"
 
-# =========================
-# Download factor and market returns
-# =========================
-etf_factor_data = yf.download(
-    factor_tickers,
-    period=return_history,
-    interval=return_interval,
-    progress=True,
-    auto_adjust=True
-)
-etf_factor_returns = etf_factor_data["Close"].pct_change().fillna(0)
+etf_factor_data = pd.read_csv('data/etf_factor_data.csv')
+etf_factor_returns = etf_factor_data.pct_change().fillna(0)
 
-market_data = yf.download(
-    [market_ticker],
-    period=return_history,
-    interval=return_interval,
-    progress=True,
-    auto_adjust=True
-)
-market_returns = market_data["Close"].ffill().pct_change().fillna(0)
+
+market_data = pd.read_csv('data/market_data.csv')
+market_returns = market_data.ffill().pct_change().fillna(0)
 
 # =========================
 # Load portfolio holdings
 # =========================
-portfolio_data = pd.read_csv(portfolio_data_loc).rename(columns={"Weight (%)": "Weight"})
+# portfolio_data = pd.read_csv(portfolio_data_loc).rename(columns={"Weight (%)": "Weight"})
+portfolio_data = df.copy().rename(columns={"Weight (%)": "Weight"})
 tickers = portfolio_data["Ticker"].unique()
 
 # =========================
 # Constituent returns
 # =========================
-port_constituent_data = data.copy()
-port_constituent_data["Close"] = port_constituent_data["Close"].ffill()
-port_constituent_returns = port_constituent_data["Close"].pct_change().fillna(0)
+
+port_constituent_returns = portfolio.copy().ffill().pct_change().fillna(0)
 
 # =========================
 # Combine all returns
@@ -231,7 +206,7 @@ rank = st.columns((1, 1), gap='large')
 # =========================
 # 1. 個股層級資料整理
 # =========================
-asset_ret = data['Close'].pct_change().dropna()
+asset_ret = portfolio.pct_change().dropna()
 vol = asset_ret.std() * np.sqrt(252) * 100
 
 df_contrib = (
@@ -344,7 +319,7 @@ st.divider()
 ############### Heatmap ###############
 #######################################
 # --- log returns corr ---
-close_df = data["Close"]
+close_df = portfolio.copy()
 log_ret = np.log(close_df / close_df.shift(1))
 corr_mat = log_ret.corr()
 
