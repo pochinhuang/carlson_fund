@@ -5,6 +5,7 @@
 - [3. Simulation Methodology](#3-simulation-methodology)
 - [4. Risk Metrics](#4-risk-metrics)
 - [5. Notes and Limitations](#5-notes-and-limitations)
+- [6. Summary](#6-summary)
 
 ## 1. Overview
 
@@ -445,7 +446,7 @@ This document reflects the **current code implementation**. A few important limi
 
 ---
 
-## Summary
+## 6. Summary
 
 This application is a **Streamlit Monte Carlo portfolio risk tool** that estimates historical return dynamics, preserves cross-asset dependence through a Cholesky-based correlation structure, simulates future portfolio paths under multiple distributional assumptions, and reports VaR, CVaR, Sharpe Ratio, and Sortino Ratio.
 

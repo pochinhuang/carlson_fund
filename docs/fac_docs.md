@@ -1,5 +1,16 @@
 # Sector Factor Analysis Documentation
 
+- [1. Overview](#1-overview)
+- [2. Data Inputs](#2-data-inputs)
+- [3. Application Workflow](#3-application-workflow)
+- [4. Regression Model](#4-regression-model)
+- [5. Output Structure](#5-output-structure)
+- [6. Visualization](#6-visualization)
+- [7. Streamlit Interface Logic](#7-streamlit-interface-logic)
+- [8. Practical Interpretation](#8-practical-interpretation)
+- [9. Limitations](#9-limitations)
+- [10. Summary](#10-summary)
+
 ## 1. Overview
 
 This Streamlit application performs **sector-level factor exposure analysis** for portfolio holdings.  
