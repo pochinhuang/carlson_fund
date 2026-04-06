@@ -1,13 +1,5 @@
 # Risk Management: Monte Carlo Portfolio Simulation
 
-**University of Minnesota Twin Cities**  
-**Master of Financial Mathematics**
-
-<small>**Authors:** Ioannis Petropoulos, Po-Chin Huang</small>  
-<small>**Advisor:** Dr. Thomas Gebhart</small>
-
----
-
 - [1. Overview](#1-overview)
 - [2. What the Application Does](#2-what-the-application-does)
 - [3. Simulation Methodology](#3-simulation-methodology)
