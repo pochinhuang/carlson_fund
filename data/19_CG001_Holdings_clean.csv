@@ -1,40 +1,46 @@
 Security Name,Ticker,Shares,Price [USD],Market Value [USD],Weight (%),Industry,Sector
-Addus HomeCare Corporation,ADUS,6377,102.86,655938.22,2.425990743,Medical Care Facilities,Healthcare
-"ADMA Biologics, Inc.",ADMA,41712,24.11,1005676.32,3.719498832,Biotechnology,Healthcare
-Artisan Partners Asset Management Inc.,APAM,16320,37.56,612979.2,2.267106596,Asset Management,Financial Services
-Avery Dennison Corporation,AVY,2050,171.72,352026,1.301969898,Packaging & Containers,Consumer Cyclical
-Bruker Corporation,BRKR,5404,39.84,215295.36,0.796270951,Medical Devices,Healthcare
-"BWX Technologies, Inc.",BWXT,7836,109.24,856004.64,3.165937385,Aerospace & Defense,Industrials
-"Commvault Systems, Inc.",CVLT,5064,168.73,854448.72,3.160182807,Software - Application,Technology
-Corcept Therapeutics Incorporated,CORT,3914,73.23,286622.22,1.060073695,Biotechnology,Healthcare
-"DICK'S Sporting Goods, Inc.",DKS,3471,192.01,666466.71,2.464930416,Specialty Retail,Consumer Cyclical
-"e.l.f. Beauty, Inc.",ELF,2904,62.17,180541.68,0.667734294,Household & Personal Products,Consumer Defensive
-"EMCOR Group, Inc.",EME,1217,413.02,502645.34,1.85903627,Engineering & Construction,Industrials
-"Exelixis, Inc.",EXEL,16511,38.55,636499.05,2.354094877,Biotechnology,Healthcare
-"ExlService Holdings, Inc.",EXLS,21285,44.98,957399.3,3.540946035,Information Technology Services,Technology
-Fabrinet,FN,4996,207.55,1036919.8,3.835052997,Electronic Components,Technology
-FactSet Research Systems Inc.,FDS,1169,428.71,501161.99,1.853550093,Financial Data & Stock Exchanges,Financial Services
-"Halozyme Therapeutics, Inc.",HALO,3614,60.82,219803.48,0.812944255,Biotechnology,Healthcare
-"Inspire Medical Systems, Inc.",INSP,5183,159.93,828917.19,3.065754317,Medical Devices,Healthcare
-"InterDigital, Inc.",IDCC,5863,200.53,1175707.39,4.348359583,Software - Application,Technology
-IRADIMED CORPORATION,IRMD,10602,53.7,569327.4,2.105660198,Medical Devices,Healthcare
-"Ironwood Pharmaceuticals, Inc.",IRWD,26147,0.94,24583.41,0.090921863,Drug Manufacturers - Specialty & Generic,Healthcare
-"KBR, Inc.",KBR,11779,52.88,622873.52,2.303700787,Engineering & Construction,Industrials
-Lamar Advertising Company,LAMR,8742,114.53,1001221.26,3.703021771,REIT - Specialty,Real Estate
-"Lantheus Holdings, Inc.",LNTH,12173,103.96,1265505.08,4.680476783,Semiconductor Equipment & Materials,Technology
-"Napco Security Technologies, Inc.",NSSC,9258,22.87,211730.46,0.783086151,Drug Manufacturers - Specialty & Generic,Healthcare
-"Neurocrine Biosciences, Inc.",NBIX,6466,107.24,693413.84,2.564594509,Security & Protection Services,Industrials
-Nextracker Inc.,NXT,4877,43.07,210052.39,0.776879801,Medical Care Facilities,Healthcare
-Onto Innovation Inc.,ONTO,7305,122.28,893255.4,3.303709505,Solar,Technology
-"Option Care Health, Inc.",OPCH,6389,30.69,196078.41,0.725196967,Electronic Components,Technology
-"OSI Systems, Inc.",OSIS,5864,203.12,1191095.68,4.40527325,Recreational Vehicles,Consumer Cyclical
-"Patrick Industries, Inc.",PATK,10669,78.52,837729.88,3.098348095,Software - Application,Technology
-Paylocity Holding Corporation,PCTY,2251,192.33,432934.83,1.601211605,Software - Infrastructure,Technology
-"Qualys, Inc.",QLYS,5540,128.43,711502.2,2.631494398,Trucking,Industrials
-"Saia, Inc.",SAIA,2905,236.65,687468.25,2.542604715,Software - Application,Technology
-"Sprouts Farmers Market, Inc.",SFM,8827,172.3,1520892.1,5.625026937,Banks - Regional,Financial Services
-"SPS Commerce, Inc.",SPSC,3050,142,433100,1.601822487,Engineering & Construction,Industrials
-"Sterling Infrastructure, Inc.",STRL,1028,149.28,153459.84,0.567571975,Specialty Industrial Machinery,Industrials
-Tennant Company,TNC,13453,72.89,980589.17,3.626713884,Engineering & Construction,Industrials
-"Tetra Tech, Inc.",TTEK,26996,31.27,844164.92,3.122148122,Grocery Stores,Consumer Defensive
-"The Bancorp, Inc.",TBBK,29263,48.75,1426571.25,5.276180808,Electronic Components,Technology
+Addus HomeCare Corporation,ADUS,1757,93.5,164279.5,0.529345042,Medical Care Facilities,Healthcare
+Artisan Partners Asset Management Inc.,APAM,22859,36.18,827038.62,2.66490215,Asset Management,Financial Services
+Blue Bird Corporation,BLBD,20895,57.44,1200208.8,3.867339366,Farm & Heavy Construction Machinery,Industrials
+"BWX Technologies, Inc.",BWXT,4503,215.98,972557.94,3.133797725,Aerospace & Defense,Industrials
+Carpenter Technology Corporation,CRS,782,394.82,308749.24,0.994858636,Metal Fabrication,Industrials
+"Clear Secure, Inc.",YOU,26553,51.77,1374648.81,4.429423828,Software - Application,Technology
+"Collegium Pharmaceutical, Inc.",COLL,5701,32.59,185795.59,0.598674663,Drug Manufacturers - Specialty & Generic,Healthcare
+Corcept Therapeutics Incorporated,CORT,3914,40.85,159886.9,0.515191109,Biotechnology,Healthcare
+"Dorman Products, Inc.",DORM,1490,100.5,149745,0.482511654,Auto Parts,Consumer Cyclical
+"EMCOR Group, Inc.",EME,1944,757.54,1472657.76,4.745230436,Engineering & Construction,Industrials
+"Exelixis, Inc.",EXEL,16378,43.98,720304.44,2.320980913,Biotechnology,Healthcare
+"ExlService Holdings, Inc.",EXLS,21285,30.87,657067.95,2.117218895,Information Technology Services,Technology
+Fabrinet,FN,2297,554.35,1273341.95,4.102990621,Electronic Components,Technology
+FactSet Research Systems Inc.,FDS,1915,230.94,442250.1,1.425028063,Financial Data & Stock Exchanges,Financial Services
+"Halozyme Therapeutics, Inc.",HALO,4988,63.08,314643.04,1.013849769,Biotechnology,Healthcare
+"Harrow, Inc.",HROW,2059,35.13,72332.67,0.233071931,Drug Manufacturers - Specialty & Generic,Healthcare
+"InterDigital, Inc.",IDCC,3084,314.31,969332.04,3.123403158,Software - Application,Technology
+"Interface, Inc.",TILE,19447,24.87,483646.89,1.558417716,"Furnishings, Fixtures & Appliances",Consumer Cyclical
+IRADIMED CORPORATION,IRMD,11277,95.66,1078757.82,3.475997329,Medical Devices,Healthcare
+"Ironwood Pharmaceuticals, Inc.",IRWD,26147,3.53,92298.91,0.297407591,Drug Manufacturers - Specialty & Generic,Healthcare
+iShares Trust - iShares Russell 2000 Growth ETF,IWO,2034,319.69,650249.46,2.095248205,ETF,ETF
+iShares Trust - iShares Russell Mid-Cap Growth ETF,IWP,5184,129.83,673038.72,2.168680263,ETF,ETF
+"KBR, Inc.",KBR,17868,37.63,672372.84,2.16653465,Engineering & Construction,Industrials
+Lamar Advertising Company,LAMR,6639,128.19,851053.41,2.742283138,REIT - Specialty,Real Estate
+"Lantheus Holdings, Inc.",LNTH,18972,75.89,1439785.08,4.639307359,Drug Manufacturers - Specialty & Generic,Healthcare
+"Mirum Pharmaceuticals, Inc.",MIRM,2040,96.24,196329.6,0.632617583,Biotechnology,Healthcare
+"Napco Security Technologies, Inc.",NSSC,20536,40.24,826368.64,2.662743326,Security & Protection Services,Industrials
+"Neurocrine Biosciences, Inc.",NBIX,5786,132.48,766529.28,2.469927615,Drug Manufacturers - Specialty & Generic,Healthcare
+Nextpower Inc.,NXT,7662,108.06,827955.72,2.66785725,Solar,Technology
+"Nutanix, Inc.",NTNX,7769,39.52,307030.88,0.989321699,Software - Infrastructure,Technology
+Onto Innovation Inc.,ONTO,6783,221.17,1500196.11,4.833965117,Semiconductor Equipment & Materials,Technology
+"Option Care Health, Inc.",OPCH,26933,27.73,746852.09,2.406523338,Medical Care Facilities,Healthcare
+"OSI Systems, Inc.",OSIS,4932,274.33,1352995.56,4.359652246,Electronic Components,Technology
+"Penumbra, Inc.",PEN,641,329.87,211446.67,0.681328141,Medical Devices,Healthcare
+"Popular, Inc.",BPOP,6628,139.9,927257.2,2.987828677,Banks - Regional,Financial Services
+"Powell Industries, Inc.",POWL,3378,186.72,630740.16,2.032384907,Electrical Equipment & Parts,Industrials
+"Qualys, Inc.",QLYS,5540,90.32,500372.8,1.612312313,Software - Infrastructure,Technology
+"SharkNinja, Inc.",SN,11802,108.48,1280280.96,4.125349652,"Furnishings, Fixtures & Appliances",Consumer Cyclical
+"Sprouts Farmers Market, Inc.",SFM,10450,77.43,809143.5,2.607240099,Grocery Stores,Consumer Defensive
+"SPS Commerce, Inc.",SPSC,5975,58.16,347506,1.119741526,Software - Application,Technology
+"Sterling Infrastructure, Inc.",STRL,1028,393.71,404733.88,1.304142468,Engineering & Construction,Industrials
+"Tetra Tech, Inc.",TTEK,26996,31.19,842005.24,2.713127925,Engineering & Construction,Industrials
+"The Bancorp, Inc.",TBBK,9236,56.17,518786.12,1.671644121,Banks - Regional,Financial Services
+"TransMedics Group, Inc.",TMDX,1730,104.8,181304,0.584201763,Medical Devices,Healthcare
+Vanguard Scottsdale Funds - Vanguard Russell 2000 Growth ETF,VTWG,2790,233.19,650605.68,2.096396025,ETF,ETF

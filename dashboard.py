@@ -64,7 +64,6 @@ etf_factor_returns = etf_factor_data.pct_change().fillna(0)
 
 market_data = pd.read_csv('data/market_data.csv')
 market_returns = market_data.ffill().pct_change().fillna(0)
-
 # =========================
 # Load portfolio holdings
 # =========================
