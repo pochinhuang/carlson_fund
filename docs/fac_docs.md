@@ -381,14 +381,6 @@ The user interface follows a simple sequence:
 5. Compute stock-by-stock regression exposures for the selected sector.
 6. Show the resulting table and charts.
 
-If the resulting exposure table is empty, the app displays:
-
-```python
-st.warning("No valid exposure results for this sector.")
-```
-
-Otherwise it displays a success message and the results.
-
 ---
 
 ## 8. Practical Interpretation
