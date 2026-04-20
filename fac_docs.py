@@ -63,6 +63,8 @@ div[data-testid="stMarkdownContainer"] span {
 
 div[data-testid="stMarkdownContainer"] code {
     font-family: 'IBM Plex Mono', monospace !important;
+    color: #4a9eff !important;
+    background-color: rgba(255,255,255,0.06) !important;
 }
 </style>
 """, unsafe_allow_html=True)
