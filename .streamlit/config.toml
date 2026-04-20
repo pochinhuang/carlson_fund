@@ -1,11 +1,11 @@
 [theme]
 base = "dark"
 primaryColor = "#1ed760"
-backgroundColor = "#2a2a2a"
+backgroundColor = "#000000"
 secondaryBackgroundColor = "#121212"
 codeBackgroundColor = "#121212"
 textColor = "#ffffff"
-linkColor = "#1ed760"
+linkColor = "#4a9eff"
 borderColor = "#7c7c7c"
 showWidgetBorder = true
 baseRadius = "0.3rem"
@@ -19,9 +19,9 @@ chartCategoricalColors = ["#ffc862", "#2d46b9", "#b49bc8"]
 toolbarMode = "minimal"
 
 [theme.sidebar]
-backgroundColor = "#121212"
+backgroundColor = "#000000"
 secondaryBackgroundColor = "#000000"
-codeBackgroundColor = "#2a2a2a"
+codeBackgroundColor = "#000000"
 borderColor = "#696969"
 
 [server]
