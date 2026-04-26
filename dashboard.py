@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from html import escape
 
@@ -474,6 +475,48 @@ div[data-testid="stDataFrame"] * {
 """, unsafe_allow_html=True)
 
 # =========================
+# Load Data
+# =========================
+
+@st.cache_data(show_spinner=False)
+def load_data():
+    df = pd.read_csv("data/19_CG001_Holdings_clean.csv")
+    benchmark_holdings = pd.read_csv("data/R2500G_proxy_Holdings_clean.csv")
+
+    portfolio = pd.read_csv("data/portfolio.csv")
+    all_prices = pd.read_csv("data/all_close_prices.csv")
+
+    etf_factor_data = pd.read_csv("data/etf_factor_data.csv")
+    etf_factor_returns = etf_factor_data.pct_change().fillna(0)
+
+    market_data = pd.read_csv("data/market_data.csv")
+    market_returns = market_data.ffill().pct_change().fillna(0)
+
+    return (
+        df,
+        benchmark_holdings,
+        portfolio,
+        all_prices,
+        etf_factor_data,
+        etf_factor_returns,
+        market_data,
+        market_returns
+    )
+
+
+(
+    df,
+    benchmark_holdings,
+    portfolio,
+    all_prices,
+    etf_factor_data,
+    etf_factor_returns,
+    market_data,
+    market_returns
+) = load_data()
+
+
+# =========================
 # Helper
 # =========================
 def section_header(title_text: str, title_accent: str, subtitle: str):
@@ -489,10 +532,9 @@ def section_header(title_text: str, title_accent: str, subtitle: str):
 # =========================
 # Read data
 # =========================
-df = pd.read_csv("data/19_CG001_Holdings_clean.csv")
-portfolio = pd.read_csv("data/portfolio.csv")
+RECENT_LOOKBACK = 5
 
-ret = np.round(((portfolio.iloc[-1] / portfolio.iloc[-3]) - 1) * 100, 2)
+ret = np.round(((portfolio.iloc[-1] / portfolio.iloc[-RECENT_LOOKBACK]) - 1) * 100, 2)
 df["Return (%)"] = df["Ticker"].map(ret).fillna(0)
 
 shares = (
@@ -523,12 +565,6 @@ pct_contrib = (cov_with_pf / var_p).sort_values(ascending=False)
 # =========================
 factor_tickers = ["SIZE", "VLUE", "MTUM", "QUAL"]
 market_ticker = "CSUS.L"
-
-etf_factor_data = pd.read_csv("data/etf_factor_data.csv")
-etf_factor_returns = etf_factor_data.pct_change().fillna(0)
-
-market_data = pd.read_csv("data/market_data.csv")
-market_returns = market_data.ffill().pct_change().fillna(0)
 
 portfolio_data = df.copy().rename(columns={"Weight (%)": "Weight"})
 tickers = portfolio_data["Ticker"].unique()
@@ -645,6 +681,180 @@ with st.container(border=True):
     """)
 
 # =========================
+# Brinson Attribution Helper
+# =========================
+
+def calculate_sector_brinson(
+    portfolio_holdings,
+    benchmark_holdings,
+    portfolio_prices,
+    all_prices,
+    lookback=5
+):
+    """
+    lookback=6 means last price / price 5 trading days ago.
+    For weekly return, use 6 if your data is daily trading data.
+    """
+
+    # -----------------------------
+    # Standardize column names
+    # -----------------------------
+    portfolio_holdings = portfolio_holdings.copy()
+    benchmark_holdings = benchmark_holdings.copy()
+
+    portfolio_holdings = portfolio_holdings.rename(
+        columns={
+            "Ticker": "ticker",
+            "Weight (%)": "weight",
+            "Sector": "sector",
+            "Industry": "industry"
+        }
+    )
+
+    benchmark_holdings = benchmark_holdings.rename(
+        columns={
+            "Ticker": "ticker",
+            "Weight (%)": "weight",
+            "sector": "sector",
+            "industry": "industry",
+            "Sector": "sector",
+            "Industry": "industry"
+        }
+    )
+
+    portfolio_holdings["ticker"] = portfolio_holdings["ticker"].astype(str).str.strip()
+    benchmark_holdings["ticker"] = benchmark_holdings["ticker"].astype(str).str.strip()
+
+    # Convert percentage weight into decimal weight
+    portfolio_holdings["weight"] = portfolio_holdings["weight"] / 100
+    benchmark_holdings["weight"] = benchmark_holdings["weight"] / 100
+
+    # -----------------------------
+    # Calculate ticker returns
+    # -----------------------------
+    portfolio_ret = portfolio_prices.iloc[-1] / portfolio_prices.iloc[-lookback] - 1
+    benchmark_ret = all_prices.iloc[-1] / all_prices.iloc[-lookback] - 1
+
+    portfolio_ret = portfolio_ret.replace([np.inf, -np.inf], np.nan).dropna()
+    benchmark_ret = benchmark_ret.replace([np.inf, -np.inf], np.nan).dropna()
+
+    portfolio_ret.name = "return"
+    benchmark_ret.name = "return"
+
+    # -----------------------------
+    # Merge returns into holdings
+    # -----------------------------
+    portfolio_data = portfolio_holdings.merge(
+        portfolio_ret,
+        left_on="ticker",
+        right_index=True,
+        how="left"
+    )
+
+    benchmark_data = benchmark_holdings.merge(
+        benchmark_ret,
+        left_on="ticker",
+        right_index=True,
+        how="left"
+    )
+
+    portfolio_data = portfolio_data.dropna(subset=["return"])
+    benchmark_data = benchmark_data.dropna(subset=["return"])
+
+    # -----------------------------
+    # Sector weight and sector return
+    # -----------------------------
+    def sector_summary(data):
+        grouped = data.groupby("sector")
+
+        sector_weight = grouped["weight"].sum()
+
+        sector_return = grouped.apply(
+            lambda x: np.average(x["return"], weights=x["weight"])
+            if x["weight"].sum() != 0 else np.nan
+        )
+
+        return pd.DataFrame({
+            "weight": sector_weight,
+            "return": sector_return
+        })
+
+    portfolio_sector = sector_summary(portfolio_data)
+    benchmark_sector = sector_summary(benchmark_data)
+
+    # -----------------------------
+    # Combine portfolio and benchmark sector data
+    # -----------------------------
+    brinson = portfolio_sector.join(
+        benchmark_sector,
+        how="outer",
+        lsuffix="_portfolio",
+        rsuffix="_benchmark"
+    ).fillna(0)
+
+    benchmark_total_return = (
+        brinson["weight_benchmark"] * brinson["return_benchmark"]
+    ).sum()
+
+    # -----------------------------
+    # Brinson attribution
+    # -----------------------------
+    brinson["allocation_effect"] = (
+        brinson["weight_portfolio"] - brinson["weight_benchmark"]
+    ) * (
+        brinson["return_benchmark"] - benchmark_total_return
+    )
+
+    brinson["selection_effect"] = (
+        brinson["weight_benchmark"]
+        * (brinson["return_portfolio"] - brinson["return_benchmark"])
+    )
+
+    brinson["interaction_effect"] = (
+        brinson["weight_portfolio"] - brinson["weight_benchmark"]
+    ) * (
+        brinson["return_portfolio"] - brinson["return_benchmark"]
+    )
+
+    # -----------------------------
+    # Convert to percentage display
+    # -----------------------------
+    output = pd.DataFrame({
+        ("portfolio", "weight"): brinson["weight_portfolio"] * 100,
+        ("portfolio", "return"): brinson["return_portfolio"] * 100,
+
+        ("R2500G", "weight"): brinson["weight_benchmark"] * 100,
+        ("R2500G", "return"): brinson["return_benchmark"] * 100,
+
+        ("attribution", "allocation effect"): brinson["allocation_effect"] * 100,
+        ("attribution", "selection effect"): brinson["selection_effect"] * 100,
+        ("attribution", "interaction effect"): brinson["interaction_effect"] * 100,
+    })
+
+    output.index.name = "sector"
+
+    # Sort by total absolute attribution impact
+    total_abs_effect = (
+        output[("attribution", "allocation effect")].abs()
+        + output[("attribution", "selection effect")].abs()
+        + output[("attribution", "interaction effect")].abs()
+    )
+
+    output = output.loc[total_abs_effect.sort_values(ascending=False).index]
+
+    return output.round(2)
+
+
+# def color_positive_negative(value):
+#     if isinstance(value, (int, float, np.number)):
+#         if value > 0:
+#             return "color: #00ff00"
+#         elif value < 0:
+#             return "color: #ff1f1f"
+#     return ""
+
+
+# =========================
 # Holdings Treemap
 # =========================
 with st.container(border=True):
@@ -702,6 +912,253 @@ with st.container(border=True):
     st.plotly_chart(fig_tree, width="stretch", config={"displayModeBar": False})
 
 # =========================
+# Sector Brinson Attribution
+# =========================
+
+def format_pct(value):
+    if pd.isna(value):
+        return ""
+    return f"{value:.2f}%"
+
+
+def brinson_value_color(value, is_weight=False):
+    if is_weight:
+        return "#ffffff"
+
+    if pd.isna(value):
+        return "#ffffff"
+    elif value > 0:
+        return "#00ff00"
+    elif value < 0:
+        return "#ff1f1f"
+    else:
+        return "#ffffff"
+
+
+def brinson_html_table(brinson_df):
+    rows_html = ""
+
+    for sector, row in brinson_df.iterrows():
+        rows_html += f"""
+        <tr>
+            <th class="brinson-sector">{escape(str(sector))}</th>
+
+            <td style="color:{brinson_value_color(row[("portfolio", "weight")], is_weight=True)};">
+                {format_pct(row[("portfolio", "weight")])}
+            </td>
+            <td style="color:{brinson_value_color(row[("portfolio", "return")])};">
+                {format_pct(row[("portfolio", "return")])}
+            </td>
+
+            <td style="color:{brinson_value_color(row[("R2500G", "weight")], is_weight=True)};">
+                {format_pct(row[("R2500G", "weight")])}
+            </td>
+            <td style="color:{brinson_value_color(row[("R2500G", "return")])};">
+                {format_pct(row[("R2500G", "return")])}
+            </td>
+
+            <td style="color:{brinson_value_color(row[("attribution", "allocation effect")])};">
+                {format_pct(row[("attribution", "allocation effect")])}
+            </td>
+            <td style="color:{brinson_value_color(row[("attribution", "selection effect")])};">
+                {format_pct(row[("attribution", "selection effect")])}
+            </td>
+            <td style="color:{brinson_value_color(row[("attribution", "interaction effect")])};">
+                {format_pct(row[("attribution", "interaction effect")])}
+            </td>
+        </tr>
+        """
+
+    return f"""
+    <div class="brinson-table-wrap">
+        <table class="brinson-table">
+            <thead>
+                <tr>
+                    <th class="brinson-blank"></th>
+                    <th colspan="2">Portfolio</th>
+                    <th colspan="2">R2500G</th>
+                    <th colspan="3">Attribution</th>
+                </tr>
+                <tr>
+                    <th>Sector</th>
+                    <th>Weight</th>
+                    <th>Return</th>
+                    <th>Weight</th>
+                    <th>Return</th>
+                    <th>Allocation Effect</th>
+                    <th>Selection Effect</th>
+                    <th>Interaction Effect</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows_html}
+            </tbody>
+        </table>
+    </div>
+    """
+
+
+brinson_df = calculate_sector_brinson(
+    portfolio_holdings=df,
+    benchmark_holdings=benchmark_holdings,
+    portfolio_prices=portfolio,
+    all_prices=all_prices,
+    lookback=RECENT_LOOKBACK
+)
+
+# -------------------------
+# Radar chart data
+# -------------------------
+radar_df = pd.DataFrame({
+    "Sector": brinson_df.index.astype(str),
+    "Portfolio": brinson_df[("portfolio", "weight")].values,
+    "Benchmark": brinson_df[("R2500G", "weight")].values,
+})
+
+# close loop
+radar_df = pd.concat([radar_df, radar_df.iloc[[0]]], ignore_index=True)
+
+fig_radar = go.Figure()
+
+fig_radar.add_trace(
+    go.Scatterpolar(
+        r=radar_df["Portfolio"],
+        theta=radar_df["Sector"],
+        fill="toself",
+        name="Portfolio",
+        line=dict(color="#00e5a0", width=2),
+        fillcolor="rgba(0,229,160,0.16)",
+        hovertemplate="<b>%{theta}</b><br>Portfolio: %{r:.2f}%<extra></extra>"
+    )
+)
+
+fig_radar.add_trace(
+    go.Scatterpolar(
+        r=radar_df["Benchmark"],
+        theta=radar_df["Sector"],
+        fill="toself",
+        name="Benchmark",
+        line=dict(color="#4a9eff", width=2),
+        fillcolor="rgba(74,158,255,0.12)",
+        hovertemplate="<b>%{theta}</b><br>Benchmark: %{r:.2f}%<extra></extra>"
+    )
+)
+
+fig_radar.update_layout(
+    height=540,
+    margin=dict(t=10, l=10, r=10, b=25),
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(
+        family="IBM Plex Mono",
+        size=11,
+        color="white"
+    ),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.06,
+        xanchor="left",
+        x=0
+    ),
+    polar=dict(
+        bgcolor="rgba(0,0,0,0)",
+        radialaxis=dict(
+            visible=True,
+            showline=False,
+            gridcolor="rgba(255,255,255,0.10)",
+            tickfont=dict(family="IBM Plex Mono", size=13, color="white")
+        ),
+        angularaxis=dict(
+            gridcolor="rgba(255,255,255,0.08)",
+            tickfont=dict(family="IBM Plex Mono", size=13, color="white")
+        )
+    )
+)
+
+with st.container(border=True):
+    section_header(
+        "SECTOR WEIGHT",
+        "RADAR",
+        "Portfolio and Russell 2500 Growth sector weight comparison."
+    )
+
+    st.plotly_chart(
+        fig_radar,
+        width="stretch",
+        config={"displayModeBar": False}
+    )
+
+with st.container(border=True):
+    section_header(
+        "BRINSON",
+        "ATTRIBUTION",
+        "Sector allocation, selection, and interaction effects versus the Russell 2500 Growth."
+    )
+
+    st.markdown(
+        '<div class="mini-title">Brinson Table</div>',
+        unsafe_allow_html=True
+    )
+
+    st.html(f"""
+    <style>
+    .brinson-table-wrap {{
+        width: 100%;
+        overflow-x: auto;
+        font-family: 'IBM Plex Mono', monospace;
+    }}
+
+    .brinson-table {{
+        width: 100%;
+        border-collapse: collapse;
+        background: transparent;
+        color: #ffffff;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 15px;
+    }}
+
+    .brinson-table th,
+    .brinson-table td {{
+        font-family: 'IBM Plex Mono', monospace;
+        border: 1px solid rgba(255,255,255,0.14);
+        padding: 9px 10px;
+        white-space: nowrap;
+    }}
+
+    .brinson-table thead th {{
+        background: #171b22;
+        color: #cbd5e1;
+        font-weight: 400;
+        text-align: center;
+    }}
+
+    .brinson-table thead tr:nth-child(2) th:first-child {{
+        text-align: left;
+    }}
+
+    .brinson-table tbody th {{
+        background: #000000;
+        color: #dbeafe;
+        font-weight: 400;
+        text-align: left;
+    }}
+
+    .brinson-table tbody td {{
+        background: #000000;
+        font-weight: 500;
+        text-align: center;
+    }}
+
+    .brinson-blank {{
+        width: 160px;
+    }}
+    </style>
+
+    {brinson_html_table(brinson_df)}
+    """)
+
+# =========================
 # Risk Map / Contribution
 # =========================
 asset_ret = portfolio.pct_change().dropna()
@@ -757,7 +1214,14 @@ with st.container(border=True):
             y="Volatility (%)",
             size="Bubble Size",
             color="Return (%)",
-            custom_data=["Sector", "Weight (%)", "Volatility (%)", "Return (%)", "Contribution (%)", "Holdings"],
+            custom_data=[
+                "Sector",
+                "Weight (%)",
+                "Volatility (%)",
+                "Return (%)",
+                "Contribution (%)",
+                "Holdings"
+            ],
             color_continuous_scale=[
                 [0.0, "#ff6b35"],
                 [0.5, "#17202a"],
