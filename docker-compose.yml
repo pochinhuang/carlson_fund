@@ -1,0 +1,60 @@
+name: carlson_fund_local
+
+x-worker: &worker
+  image: carlson-fund-local:dev
+  build: .
+  env_file: .env
+  environment:
+    PGHOST: db
+    PGPORT: "5432"
+    PGUSER: carlson
+    PGDATABASE: carlson_fund
+    PGPASSWORD: ${POSTGRES_PASSWORD:?Run python start.py first}
+    DATA_DIR: /app/data
+    REPORTS_DIR: /app/reports
+  volumes:
+    - ./data:/app/data:ro
+    - ./reports:/app/reports
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: carlson
+      POSTGRES_DB: carlson_fund
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python start.py first}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-25432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carlson -d carlson_fund"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+  worker:
+    <<: *worker
+    profiles: ["tools"]
+    command: ["python", "verify_data.py"]
+  app:
+    <<: *worker
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${STREAMLIT_PORT:-8501}:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+  scheduler:
+    <<: *worker
+    restart: unless-stopped
+    command: ["python", "scheduler.py"]
+
+volumes:
+  pgdata:

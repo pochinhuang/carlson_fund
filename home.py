@@ -126,17 +126,20 @@ with st.sidebar.container(border=True, height=180):
 
 
 pages = {  
+    "About the Project": [
+        st.Page("docs/project_overview.py", title="Project Overview",icon=":material/info:")
+    ],
     "Portfolio Dashboard": [
-        # st.Page("dashboard.py", title = "Dashboard", icon=":material/dashboard:")
-        st.Page("dashboard.py", title = "Dashboard", icon=":material/dashboard:")
+        st.Page("portfolio_dashboard.py", title = "Dashboard", icon=":material/dashboard:")
     ],
     "Risk Management": [
-        st.Page("simulation.py", title = "Risk Analytics", icon=":material/assessment:"),
-        st.Page("portfolio_docs.py", title = "Documentation", icon=":material/article:")
+        st.Page("risk_analytics.py", title = "Risk Analytics", icon=":material/assessment:"),
+        st.Page("docs/risk_methodology.py", title = "Risk Methodology", icon=":material/article:")
     ],
     "Factor Analysis": [
-        st.Page("fac.py", title="Factor Model", icon=":material/insights:"),
-        st.Page("fac_docs.py", title = "Documentation", icon=":material/article:")
+        st.Page("factor_analysis.py", title="Sector Factor Analysis", icon=":material/insights:"),
+        # st.Page("fac_docs.py", title = "Factor Methodology", icon=":material/article:")
+        st.Page("docs/factor_methodology.py", title = "Factor Methodology", icon=":material/article:")
     ],
 }
 

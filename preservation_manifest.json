@@ -1,0 +1,26 @@
+{
+  "protected_files": {
+    "home.py": "e4452c0e3902db2714adca024e9b84322fb8c7134058e53bf5c73f9f1bbaff17",
+    "fac_docs.py": "7e99308bd77767ea305f5bfa7de53fa1d327213bc7461f5cba152d14f64bfb67",
+    "portfolio_docs.py": "f52b7ada06777562040fe2d06cb83c52be2d96e4640de3a16793367102697722",
+    "docs/fac_docs.md": "62574aed4ba5924401d4d8a4505a698270ab403feca36a101b73ca921dece6dd",
+    "docs/portfolio_docs.md": "d6293d4fc4ab9d16cdc083f0d261fc2d12017eef189c624e25218bcff681b4c0"
+  },
+  "styles": {
+    "portfolio_dashboard.py": [
+      "3de01df0def2ca11fe20f510b813ced9ff6c056373204243449bcb272d2c87a3",
+      "92a8d00dff2ee66ef5b651ae3bf9e73268dee775173b90b6b5ef61337f65237f"
+    ],
+    "factor_analysis.py": [
+      "5be2f966ed9244ae15199c0999e9549bad924ec1c63b90f9f0f0dbb8853c05bb"
+    ],
+    "risk_analytics.py": [
+      "6c93173706a2250776a11ce32652336cc75a53228256210cf1b617170f6d1f5c"
+    ]
+  },
+  "input_files": {
+    "data/portfolio_holdings.csv": "0a7361485e5abebb324ea7c6196c5665c3009d838cf0dffe21ba0c16281a500e",
+    "data/benchmark_proxy_holdings.csv": "15d4c17cead353775345182dccd2f48f804e521e7c52d48b271a0d1137f80491",
+    "data/initial_daily_prices.csv": "99dc7bf5ce309ef22537bb1c6afa610dbbb8867806644c700de1826360d5046f"
+  }
+}
