@@ -18,11 +18,11 @@ def clean(app):
 
 def test_dashboard_and_sector_controls_and_charts():
     from streamlit.testing.v1 import AppTest
-    dashboard = AppTest.from_file(str(ROOT / "dashboard.py")).run(timeout=90)
+    dashboard = AppTest.from_file(str(ROOT / "portfolio_dashboard.py")).run(timeout=90)
     clean(dashboard)
     assert len(dashboard.get("plotly_chart")) == 3
     assert len(dashboard.dataframe) == 1
-    sector = AppTest.from_file(str(ROOT / "fac.py")).run(timeout=90)
+    sector = AppTest.from_file(str(ROOT / "factor_analysis.py")).run(timeout=90)
     clean(sector)
     sector.selectbox[0].set_value("Healthcare")
     sector.button[0].click().run(timeout=90)
@@ -34,7 +34,7 @@ def test_dashboard_and_sector_controls_and_charts():
 
 def test_simulation_all_original_distribution_options():
     from streamlit.testing.v1 import AppTest
-    app = AppTest.from_file(str(ROOT / "simulation.py")).run(timeout=90)
+    app = AppTest.from_file(str(ROOT / "risk_analytics.py")).run(timeout=90)
     clean(app)
     assert app.selectbox[0].options == ["Normal", "T", "Empirical"]
     assert [x.label for x in app.date_input] == ["Start Date", "End Date"]
@@ -61,10 +61,10 @@ def test_original_home_and_documentation_routes_with_fixture_asset():
     try:
         app = AppTest.from_file(str(ROOT / "home.py")).run(timeout=90)
         clean(app)
-        app.switch_page("fac_docs.py").run(timeout=90)
+        app.switch_page("docs/factor_methodology.py").run(timeout=90)
         clean(app)
         assert len(app.markdown) > 0
-        app.switch_page("portfolio_docs.py").run(timeout=90)
+        app.switch_page("docs/risk_methodology.py").run(timeout=90)
         clean(app)
     finally:
         if not existed:

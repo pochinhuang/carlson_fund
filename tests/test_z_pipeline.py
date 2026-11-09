@@ -82,7 +82,7 @@ def test_complete_update_repeat_and_open_dashboard_refresh(isolated_database, ta
     from streamlit.testing.v1 import AppTest
     db = DataAccess(isolated_database)
     before_revision = db.get_data_revision()
-    app = AppTest.from_file(str(ROOT / "dashboard.py")).run(timeout=90)
+    app = AppTest.from_file(str(ROOT / "portfolio_dashboard.py")).run(timeout=90)
     assert not app.exception and not app.error
     before_chart = app.get("plotly_chart")[0].proto.spec
     providers = (FakeProvider(table), FakeProvider(table,market=True))

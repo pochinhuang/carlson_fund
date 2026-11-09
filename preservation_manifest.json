@@ -1,10 +1,9 @@
 {
   "protected_files": {
-    "home.py": "e4452c0e3902db2714adca024e9b84322fb8c7134058e53bf5c73f9f1bbaff17",
-    "fac_docs.py": "7e99308bd77767ea305f5bfa7de53fa1d327213bc7461f5cba152d14f64bfb67",
-    "portfolio_docs.py": "f52b7ada06777562040fe2d06cb83c52be2d96e4640de3a16793367102697722",
-    "docs/fac_docs.md": "62574aed4ba5924401d4d8a4505a698270ab403feca36a101b73ca921dece6dd",
-    "docs/portfolio_docs.md": "d6293d4fc4ab9d16cdc083f0d261fc2d12017eef189c624e25218bcff681b4c0"
+    "home.py": "766850b31612c6654c371f9b9e816e580f92077aa5576c14d8f5a37cb8542804",
+    "docs/project_overview.py": "5377288dce1d8fe1fe16758e7f9555c171e6dfcb3491fcae503252b27c38aaf4",
+    "docs/risk_methodology.py": "042de806a3e74b57ac1a903923a942aae8292b2bae55863f5683d4ae7cca9b19",
+    "docs/factor_methodology.py": "1b91d21fa136a2a0c0d4fa0fb2ebd38d17ccd2eaa85b4a9916bdd28d43b336bb"
   },
   "styles": {
     "portfolio_dashboard.py": [
@@ -19,8 +18,10 @@
     ]
   },
   "input_files": {
-    "data/portfolio_holdings.csv": "0a7361485e5abebb324ea7c6196c5665c3009d838cf0dffe21ba0c16281a500e",
-    "data/benchmark_proxy_holdings.csv": "15d4c17cead353775345182dccd2f48f804e521e7c52d48b271a0d1137f80491",
-    "data/initial_daily_prices.csv": "99dc7bf5ce309ef22537bb1c6afa610dbbb8867806644c700de1826360d5046f"
-  }
+    "data/portfolio_holdings.csv": "b5436601bb11e58d25ff293dca0d885b758923ced93ea6eb50f947879bcfb9fa",
+    "data/benchmark_proxy_holdings.csv": "2f7b2621ddf6b75d203312f09e7fe15668b9bc51dc07d22460c13b91e6239654",
+    "data/initial_daily_prices.csv": "63bd06a6673b16b6d741067b4e0e87316a24e1602d386902c2ee0dbd90992f16"
+  },
+  "protected_text_newlines": "LF",
+  "input_text_newlines": "LF"
 }
