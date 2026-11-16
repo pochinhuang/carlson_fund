@@ -479,7 +479,7 @@ div[data-testid="stDataFrame"] * {
 # Load Data
 # =========================
 
-@st.cache_data(ttl=300, max_entries=4, show_spinner=False)
+@st.cache_data(ttl = 43200, max_entries = 4, show_spinner = "Loading dashboard data...")
 def load_data(revision):
     data = DataAccess().load_analytics_data()
     brinson = portfolio_analytics.calculate_sector_brinson(
